@@ -2,7 +2,7 @@ import yargs from 'yargs';
 import { cmd } from '.';
 
 describe('main entrypoint', () => {
-  test('shows help page', async () => {
+  test('shows help when no command is provided', async () => {
     const log = console.log;
     console.log = jest.fn();
     await cmd(yargs(['--help']).exitProcess(false)).argv;

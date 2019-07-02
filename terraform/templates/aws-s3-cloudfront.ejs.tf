@@ -4,7 +4,7 @@ module "s3_website_<%= opts.stage %>" {
   source = "./static-s3-website"
   bucket_name = "<%= opts.bucketName %>"
 }
-output "s3 endpoint (<%= opts.stage %>)" {
+output "s3_endpoint_<%= opts.stage %>" {
   value = "http://${module.s3_website_default.website_endpoint}"
 }
 
@@ -13,7 +13,7 @@ module "cloudfront_distribution_<%= opts.stage %>" {
   source = "./cloudfront-distribution"
   website_endpoint = "${module.s3_website_default.website_endpoint}"
 }
-output "cloudfront endpoint (<%= opts.stage %>)" {
+output "cloudfront_endpoint_<%= opts.stage %>" {
   value = "${module.cloudfront_distribution_<%= opts.stage %>.endpoint_url}"
 }
 <% } %>

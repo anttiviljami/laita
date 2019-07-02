@@ -1,5 +1,10 @@
-variable "website_endpoint" {}
+variable "website_endpoint" { type = "string" }
+variable "acm_certificate_arn" { default = "" }
 variable "price_class" { default = "PriceClass_100" }
+variable "aliases" {
+  type = list(string)
+  default = []
+}
 
 resource "aws_cloudfront_distribution" "static" {
   enabled = true
@@ -19,14 +24,12 @@ resource "aws_cloudfront_distribution" "static" {
     }
   }
 
-  #aliases = ["avoinsorsa.fi", "www.avoinsorsa.fi"]
-  #viewer_certificate {
-  #  acm_certificate_arn = "arn:aws:acm:us-east-1:921809084865:certificate/b39683f9-e782-4e0b-8dda-fce1511b6be1"
-  #  ssl_support_method = "sni-only"
-  #}
-
+  aliases = var.aliases
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn = var.acm_certificate_arn
+    ssl_support_method = "sni-only"
+    minimum_protocol_version = "TLSv1"
+    cloudfront_default_certificate = var.acm_certificate_arn == "" ? true : false
   }
 
   default_root_object = "index.html"
