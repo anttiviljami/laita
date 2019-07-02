@@ -13,10 +13,9 @@ import * as shell from '../util/shell';
 const targets: string[] = [
   'aws-s3-cloudfront',
   'azure-storage',
-  'aws-amplify',
+  'gcp-storage',
   'netlify',
   'heroku',
-  'github',
   // no-wrap
 ];
 

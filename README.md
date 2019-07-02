@@ -11,10 +11,9 @@ Supported targets:
 
 - [x] AWS S3 + Cloudfront
 - [ ] Azure Storage
-- [ ] AWS Amplify
+- [ ] GCP Cloud Storage
 - [ ] Netlify
 - [ ] Heroku
-- [ ] Github
 
 ## Requirements
 
