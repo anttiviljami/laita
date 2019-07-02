@@ -48,10 +48,93 @@ default:
   source: public/
   target: aws-s3-cloudfront
   region: eu-west-1
-  bucketName: laita-static-default-c49a2d84
+  bucketName: laita-static-default-2094db20
   createCloudFront: true
   domains:
   - mydomain.com
   - www.mydomain.com
-  acmCertificateARN: arn:aws:acm:us-east-1:921809084865:certificate/b39683f9-e782-4e0b-8dda-fce1511b6be1
+  acmCertificateARN: arn:aws:acm:us-east-1:921809084865:certificate/c0b7309b-39cc-4925-9df3-bcedf78b92f8
 ```
+
+## Example
+
+Configuration with `laita config`
+
+```
+$ laita config
+? Static files directory? public/
+? Choose method aws-s3-cloudfront
+? AWS Region? eu-west-1
+? S3 bucket name? laita-static-default-2094db20
+? Create CloudFront distribution? (needed to use custom domains) Yes
+? Add a domain name? (leave empty to continue) my.example-website.com
+? Add another domain name? (leave empty to continue)
+? Add ACM certificate? (needed to use custom domains) Yes
+? ACM Certificate ARN? 	arn:aws:acm:us-east-1:921809084865:certificate/c0b7309b-39cc-4925-9df3-bcedf78b92f8
+? Store terraform state remotely? s3
+? Terraform bucket name laita-terraform-d40cb707
+? Terraform bucket region eu-west-1
+? Create bucket now? Yes
+----> Running "aws s3api create-bucket --bucket laita-terraform-d40cb707 --region eu-west-1 --create-bucket-configuration LocationConstraint=eu-west-1"...
+Config written to .laitarc
+```
+
+Provisioning with `laita provision`
+
+```
+$ laita provision
+Provisioning AWS S3 + Cloudfront resources... (stage: default)
+----> Running "terraform init"...
+Initializing modules...
+- cloudfront_distribution_default in cloudfront-distribution
+
+Initializing the backend...
+
+Successfully configured the backend "s3"! Terraform will automatically
+use this backend unless the backend configuration changes.
+
+Initializing provider plugins...
+
+Terraform has been successfully initialized!
+
+...
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+? Apply changes? Yes
+----> Running "terraform apply -auto-approve -target module.s3_website_default -target module.cloudfront_distribution_default"...
+
+module.s3_website_default.aws_s3_bucket.static: Creating...
+module.s3_website_default.aws_s3_bucket.static: Creation complete after 7s [id=laita-static-default-2094db20]
+module.cloudfront_distribution_default.aws_cloudfront_distribution.static: Creating...
+...
+module.cloudfront_distribution_default.aws_cloudfront_distribution.static: Creation complete after 28m42s [id=EW9JZP1F0BO3L]
+module.cloudfront_distribution_default.aws_cloudfront_distribution.static: Creation complete after 28m42s [id=EW9JZP1F0BO3L]
+
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+cloudfront_endpoint_default = https://d3ib5k4yxe7qbv.cloudfront.net
+s3_endpoint_default = http://laita-static-default-2094db20.s3-website-eu-west-1.amazonaws.com
+```
+
+Deployment with `laita deploy`
+
+```
+$ laita deploy
+Deploying site to S3... (stage: default)
+----> Running "aws s3 sync --delete public/ s3://laita-static-default-2094db20"...
+upload: public/bundle.css to s3://laita-static-default-2094db20/bundle.css
+upload: public/index.html to s3://laita-static-default-2094db20/index.html
+upload: public/global.css to s3://laita-static-default-2094db20/global.css
+upload: public/favicon.png to s3://laita-static-default-2094db20/favicon.png
+upload: public/.DS_Store to s3://laita-static-default-2094db20/.DS_Store
+upload: public/bundle.css.map to s3://laita-static-default-2094db20/bundle.css.map
+upload: public/bundle.js to s3://laita-static-default-2094db20/bundle.js
+upload: public/images/anttiviljami.jpg to s3://laita-static-default-2094db20/images/anttiviljami.jpg
+upload: public/bundle.js.map to s3://laita-static-default-2094db20/bundle.js.map
+```
+
