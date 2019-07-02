@@ -30,7 +30,7 @@
   "scripts": {
     "build": "tsc",
     "watch-build": "tsc -w",
-    "lint": "eslint src/**",
+    "lint": "eslint src/**/*.ts",
     "prettier": "prettier --write src/**",
     "prepare": "npm run build",
     "test": "NODE_ENV=test jest"
