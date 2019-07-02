@@ -1,14 +1,14 @@
 import path from 'path';
 import fs from 'fs-extra';
-import crypto from 'crypto';
 import inquirer from 'inquirer';
 import ejs from 'ejs';
 import Target from '../interface';
-import { InitOpts, InitConfig } from '../../command/init';
+import { ConfigureOpts, InitConfig } from '../../command/config';
 import { ProvisionOpts } from '../../command/provision';
 import { DeployOpts } from '../../command/deploy';
 import { configDir as getConfigDir, getConfigForStage, terraformDir } from '../../util/config';
 import * as shell from '../../util/shell';
+import { checkBucketName } from '../../util/s3';
 
 export interface AWSS3CloudFrontConfig {
   region: string;
@@ -19,19 +19,7 @@ export interface AWSS3CloudFrontConfig {
 }
 
 export default class AWSS3CloudFrontTarget implements Target {
-  public configure = async (opts: InitOpts) => {
-    const checkBucketName = (bucketName: string) => {
-      if (!bucketName || bucketName === 'randomly generated') {
-        const hash = crypto
-          .createHash('sha256')
-          .update(`${Math.random()}-${opts.stage}`)
-          .digest('hex')
-          .substr(0, 8);
-        return `laita-static-${opts.stage}-${hash}`;
-      }
-      return bucketName;
-    };
-
+  public configure = async (opts: ConfigureOpts) => {
     const config: AWSS3CloudFrontConfig = await inquirer.prompt([
       { name: 'region', type: 'input', message: 'AWS Region?', default: 'eu-west-1' },
       {
@@ -39,7 +27,7 @@ export default class AWSS3CloudFrontTarget implements Target {
         type: 'input',
         message: 'S3 bucket name?',
         default: 'randomly generated',
-        filter: checkBucketName,
+        filter: (name) => checkBucketName(name, `laita-static-${opts.stage}`),
       },
       {
         name: 'createCloudFront',
@@ -88,27 +76,10 @@ export default class AWSS3CloudFrontTarget implements Target {
     // get configuration
     const { stage } = opts;
     const config: InitConfig & AWSS3CloudFrontConfig = getConfigForStage(stage);
-    if (!config) {
-      console.error(`Configuration not found for stage ${opts.stage}`);
-      return process.exit(1);
-    }
-
-    // const { approve } = await inquirer.prompt([
-    //   { name: 'terraformState', type: 'confirm', message: 'Would you like to store terraform state in a bucket?', default: true },
-    // ]);
-
     console.log(`Provisioning AWS S3 + Cloudfront resources... (stage: ${opts.stage})`);
 
-    // make sure config dir exists
-    const configDir = getConfigDir();
-    if (!fs.existsSync(configDir)) {
-      fs.mkdirSync(configDir);
-    }
-
-    // copy all terraform modules
-    fs.copySync(terraformDir('modules'), configDir, { recursive: true, overwrite: true });
-
     // write terraform template
+    const configDir = getConfigDir();
     const output: string = await ejs.renderFile(terraformDir('templates', 'aws-s3-cloudfront.ejs.tf'), {
       opts: { ...opts, ...config },
     });

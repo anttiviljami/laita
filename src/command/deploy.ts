@@ -10,7 +10,7 @@ const handler = async (opts: DeployOpts) => {
   const { stage } = opts;
   const config = getConfigForStage(stage);
   if (!config) {
-    console.error(`No configuration found for stage ${stage}. Run laita init first`);
+    console.error(`No configuration found for stage ${stage}. Run "laita config" first`);
     process.exit(1);
   }
 

@@ -30,7 +30,7 @@ npm install -g laita
 ## Quick start
 
 ```
-laita init # follow interactive prompts to create .laitarc config
+laita config # follow interactive prompts to create .laitarc config
 laita provision # provision selected cloud infra using terraform
 laita deploy # deploy the static website to the provisioned infra
 ```
@@ -39,7 +39,7 @@ laita deploy # deploy the static website to the provisioned infra
 
 Laita uses a `.laitarc` file to store its configuration.
 
-You can generate configurations interactively using the `laita init` command.
+You can generate configurations interactively using the `laita config` command.
 
 The `.laitarc` file contents look like this:
 

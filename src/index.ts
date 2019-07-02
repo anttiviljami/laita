@@ -1,5 +1,5 @@
 import yargs from 'yargs';
-import initCommand from './command/init';
+import configCommand from './command/config';
 import provisionCommand from './command/provision';
 import deployCommand from './command/deploy';
 
@@ -21,7 +21,7 @@ export const cmd = (y: yargs.Argv<any>) =>
     .usage('Usage: $0 <command>')
     .option('stage', { default: 'default', describe: 'Specify a stage to run this' })
     .demandCommand(1)
-    .command(initCommand)
+    .command(configCommand)
     .command(provisionCommand)
     .command(deployCommand);
 

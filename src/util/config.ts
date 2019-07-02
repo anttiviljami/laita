@@ -19,13 +19,20 @@ export function resolveRcFile() {
   }
 }
 
+export function getFullConfig() {
+  const configFile = resolveRcFile();
+  if (configFile) {
+    const config = YAML.safeLoad(fs.readFileSync(configFile).toString());
+    return config;
+  }
+}
+
 export function getConfigForStage(stage: string) {
   if (typeof stage !== 'string' || !stage.length) {
     throw new Error('Stage mut not be empty!');
   }
-  const configFile = resolveRcFile();
-  if (configFile) {
-    const config = YAML.safeLoad(fs.readFileSync(configFile).toString());
+  const config = getFullConfig();
+  if (config && config[stage]) {
     return config[stage];
   }
 }

@@ -1,5 +1,8 @@
+import path from 'path';
+import fs from 'fs-extra';
 import { CommandModule } from 'yargs';
-import { getConfigForStage } from '../util/config';
+import ejs from 'ejs';
+import { getConfigForStage, terraformDir, configDir as getConfigDir, getFullConfig } from '../util/config';
 import Target from '../target/interface';
 import AWSS3CloudFrontTarget from '../target/aws-s3-cloudfront';
 import { GlobalOpts } from '..';
@@ -12,7 +15,7 @@ const handler = async (opts: ProvisionOpts) => {
   const { stage } = opts;
   const config = getConfigForStage(stage);
   if (!config) {
-    console.error(`No configuration found for stage ${stage}. Run laita init first`);
+    console.error(`No configuration found for stage ${stage}. Run "laita config" first`);
     process.exit(1);
   }
 
@@ -25,6 +28,25 @@ const handler = async (opts: ProvisionOpts) => {
     console.error('Invalid target');
     return process.exit(1);
   }
+
+  // make sure config dir exists
+  const configDir = getConfigDir();
+  if (!fs.existsSync(configDir)) {
+    fs.mkdirSync(configDir);
+  }
+
+  const fullConfig = getFullConfig();
+  if (fullConfig.terraformBackend) {
+    // write terraform template
+    const configDir = getConfigDir();
+    const output: string = await ejs.renderFile(terraformDir('templates', 'backend.ejs.tf'), {
+      config: { ...fullConfig },
+    });
+    fs.writeFileSync(path.resolve(configDir, 'backend.tf'), output);
+  }
+
+  // copy all terraform modules
+  fs.copySync(terraformDir('modules'), configDir, { recursive: true, overwrite: true });
 
   await target.provision(opts);
 };
