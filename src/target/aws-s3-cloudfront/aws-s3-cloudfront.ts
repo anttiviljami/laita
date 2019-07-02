@@ -1,12 +1,12 @@
 import path from 'path';
-import fs from 'fs';
+import fs from 'fs-extra';
 import inquirer from 'inquirer';
 import ejs from 'ejs';
 import Target from '../interface';
 import { InitOpts } from '../../command/init';
 import { ProvisionOpts } from '../../command/provision';
 import { DeployOpts } from '../../command/deploy';
-import { configDir as getConfigDir, getConfigForStage, templateDir } from '../../util/config';
+import { configDir as getConfigDir, getConfigForStage, terraformDir } from '../../util/config';
 import * as shell from '../../util/shell';
 
 export interface AWSS3CloudFrontConfig {
@@ -42,8 +42,11 @@ export default class AWSS3CloudFrontTarget implements Target {
       fs.mkdirSync(configDir);
     }
 
+    // copy all terraform modules
+    fs.copySync(terraformDir('modules'), configDir, { recursive: true, overwrite: true });
+
     // write terraform template
-    const output: string = await ejs.renderFile(templateDir('aws-s3-cloudfront.ejs.tf'), {
+    const output: string = await ejs.renderFile(terraformDir('templates', 'aws-s3-cloudfront.ejs.tf'), {
       opts: { ...opts, ...config },
     });
     fs.writeFileSync(path.resolve(configDir, `${stage}.tf`), output);

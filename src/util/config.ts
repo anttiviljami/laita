@@ -47,6 +47,6 @@ export function moduleDir(...paths: string[]) {
   return moduleDirValue;
 }
 
-export function templateDir(...paths: string[]) {
-  return path.resolve(moduleDir(), 'terraform', 'templates', ...paths);
+export function terraformDir(...paths: string[]) {
+  return path.resolve(moduleDir(), 'terraform', ...paths);
 }

@@ -45,6 +45,7 @@
   ],
   "devDependencies": {
     "@types/ejs": "^2.6.3",
+    "@types/fs-extra": "^8.0.0",
     "@types/inquirer": "^6.0.3",
     "@types/jest": "^24.0.15",
     "@types/js-yaml": "^3.12.1",
@@ -60,6 +61,7 @@
   },
   "dependencies": {
     "ejs": "^2.6.2",
+    "fs-extra": "^8.1.0",
     "inquirer": "^6.4.1",
     "js-yaml": "^3.13.1"
   }
