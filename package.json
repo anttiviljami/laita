@@ -1,6 +1,6 @@
 {
   "name": "laita",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A CLI utility to deploy static websites to the cloud",
   "author": "Viljami Kuosmanen",
   "license": "MIT",

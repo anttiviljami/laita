@@ -9,7 +9,7 @@ A CLI utility to easily deploy static websites to the cloud
 
 Supported targets:
 
-- [ ] AWS S3 + Cloudfront
+- [x] AWS S3 + Cloudfront
 - [ ] Azure Storage
 - [ ] AWS Amplify
 - [ ] Netlify
