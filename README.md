@@ -45,9 +45,13 @@ The `.laitarc` file contents look like this:
 
 ```yml
 default:
-  target: aws-s3-cloudfront
   source: public/
+  target: aws-s3-cloudfront
   region: eu-west-1
-  bucketName: laita-static-website
+  bucketName: laita-static-default-c49a2d84
   createCloudFront: true
+  domains:
+  - mydomain.com
+  - www.mydomain.com
+  acmCertificateARN: arn:aws:acm:us-east-1:921809084865:certificate/b39683f9-e782-4e0b-8dda-fce1511b6be1
 ```
