@@ -1,0 +1,33 @@
+{
+  "name": "laita",
+  "version": "0.0.1",
+  "description": "A CLI utility to deploy static websites to the cloud",
+  "author": "Viljami Kuosmanen",
+  "license": "MIT",
+  "bin": {
+    "laita": "./laita"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anttiviljami/laita.git"
+  },
+  "keywords": [
+    "static",
+    "website",
+    "hosting",
+    "cloud",
+    "aws",
+    "s3",
+    "cloudfront",
+    "azure",
+    "deploy"
+  ],
+  "bugs": {
+    "url": "https://github.com/anttiviljami/laita/issues"
+  },
+  "homepage": "https://github.com/anttiviljami/laita#readme"
+}
