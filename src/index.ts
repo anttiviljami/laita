@@ -15,17 +15,19 @@ export interface GlobalOpts {
   stage: string;
 }
 
+export const cmd = (y: yargs.Argv<any>) =>
+  y
+    .version()
+    .usage('Usage: $0 <command>')
+    .option('stage', { default: 'default', describe: 'Specify a stage to run this' })
+    .demandCommand(1)
+    .command(initCommand)
+    .command(provisionCommand)
+    .command(deployCommand);
+
 export const main = async () => {
   try {
-    const cmd = yargs
-      .version()
-      .usage('Usage: $0 <command>')
-      .option('stage', { default: 'default', describe: 'Specify a stage to run this' })
-      .demandCommand(1)
-      .command(initCommand)
-      .command(provisionCommand)
-      .command(deployCommand);
-    await cmd.argv;
+    await cmd(yargs).argv;
   } catch (err) {
     console.error(err);
     process.exit(1);
