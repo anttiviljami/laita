@@ -2,9 +2,10 @@ import { CommandModule } from 'yargs';
 import { getConfigForStage } from '../util/config';
 import Target from '../target/interface';
 import AWSS3CloudFrontTarget from '../target/aws-s3-cloudfront';
+import { GlobalOpts } from '..';
 
-export interface ProvisionOpts {
-  stage: string;
+export interface ProvisionOpts extends GlobalOpts {
+  apply: boolean;
 }
 
 const handler = async (opts: ProvisionOpts) => {
@@ -28,10 +29,16 @@ const handler = async (opts: ProvisionOpts) => {
   await target.provision(opts);
 };
 
-const command: CommandModule<{}, ProvisionOpts> = {
+const command: CommandModule<GlobalOpts, ProvisionOpts> = {
   command: 'provision',
   describe: 'sets up the target infrastructure',
   handler,
+  builder: (yargs) =>
+    yargs.option('apply', {
+      type: 'boolean',
+      default: false,
+      describe: 'Skip showing terraform plan and apply immediately',
+    }),
 };
 
 export default command;

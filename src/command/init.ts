@@ -5,9 +5,13 @@ import inquirer from 'inquirer';
 import Target from '../target/interface';
 import AWSS3CloudFrontTarget from '../target/aws-s3-cloudfront';
 import { getConfigForStage, resolveRcFile, RC_FILENAME } from '../util/config';
+import { GlobalOpts } from '..';
 
-export interface InitOpts {
-  stage: string;
+export interface InitOpts extends GlobalOpts {}
+
+export interface InitConfig {
+  target: string;
+  source: string;
 }
 
 const handler = async (opts: InitOpts) => {
@@ -18,13 +22,13 @@ const handler = async (opts: InitOpts) => {
     return process.exit(1);
   }
 
-  const { name, source } = await inquirer.prompt([
-    { name: 'name', message: 'Choose target', type: 'list', choices: ['aws-s3-cloudfront'] },
+  const initConfig: InitConfig = await inquirer.prompt([
+    { name: 'target', message: 'Choose target', type: 'list', choices: ['aws-s3-cloudfront'] },
     { name: 'source', message: 'Local directory for static files?', type: 'input', default: 'public/' },
   ]);
 
   let target: Target | undefined;
-  if (name === 'aws-s3-cloudfront') {
+  if (initConfig.target === 'aws-s3-cloudfront') {
     target = new AWSS3CloudFrontTarget();
   }
   if (!target) {
@@ -33,7 +37,7 @@ const handler = async (opts: InitOpts) => {
   }
 
   const config = await target.configure(opts);
-  const stageConfig = { target: name, source, ...config };
+  const stageConfig = { ...initConfig, ...config };
 
   const configFile = resolveRcFile() || RC_FILENAME;
   const fullConfig = fs.existsSync(configFile) ? YAML.safeLoad(fs.readFileSync(configFile).toString()) : {};

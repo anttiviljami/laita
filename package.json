@@ -1,6 +1,6 @@
 {
   "name": "laita",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "A CLI utility to deploy static websites to the cloud",
   "author": "Viljami Kuosmanen",
   "license": "MIT",
@@ -36,12 +36,20 @@
     "test": "NODE_ENV=test jest"
   },
   "files": [
+    "laita",
     "*.js",
     "*.d.ts",
+    "*.js.map",
+    "**/*.js",
+    "**/*.d.ts",
+    "**/*.js.map",
+    "terraform/**/*",
     "!src",
     "!*.test.*",
     "!*.config.js",
-    "!node_modules"
+    "!node_modules",
+    "!public",
+    "!.laita*"
   ],
   "devDependencies": {
     "@types/ejs": "^2.6.3",
@@ -63,6 +71,7 @@
     "ejs": "^2.6.2",
     "fs-extra": "^8.1.0",
     "inquirer": "^6.4.1",
-    "js-yaml": "^3.13.1"
+    "js-yaml": "^3.13.1",
+    "yargs": "^13.2.4"
   }
 }

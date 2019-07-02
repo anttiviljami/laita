@@ -2,10 +2,9 @@ import { CommandModule } from 'yargs';
 import { getConfigForStage } from '../util/config';
 import Target from '../target/interface';
 import AWSS3CloudFrontTarget from '../target/aws-s3-cloudfront';
+import { GlobalOpts } from '..';
 
-export interface DeployOpts {
-  stage: string;
-}
+export interface DeployOpts extends GlobalOpts {}
 
 const handler = async (opts: DeployOpts) => {
   const { stage } = opts;

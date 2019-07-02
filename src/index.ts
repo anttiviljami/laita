@@ -11,6 +11,10 @@ import deployCommand from './command/deploy';
  * laita deploy – deploys public directory
  */
 
+export interface GlobalOpts {
+  stage: string;
+}
+
 export const main = async () => {
   try {
     const cmd = yargs
