@@ -4,16 +4,13 @@
   "description": "A CLI utility to deploy static websites to the cloud",
   "author": "Viljami Kuosmanen",
   "license": "MIT",
-  "bin": {
-    "laita": "./laita"
-  },
-  "main": "index.js",
-  "scripts": {
-    "test": "jest"
-  },
+  "homepage": "https://github.com/anttiviljami/laita#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/anttiviljami/laita.git"
+  },
+  "bugs": {
+    "url": "https://github.com/anttiviljami/laita/issues"
   },
   "keywords": [
     "static",
@@ -26,8 +23,36 @@
     "azure",
     "deploy"
   ],
-  "bugs": {
-    "url": "https://github.com/anttiviljami/laita/issues"
+  "bin": {
+    "laita": "./laita"
   },
-  "homepage": "https://github.com/anttiviljami/laita#readme"
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch-build": "tsc -w",
+    "lint": "eslint src/**",
+    "prettier": "prettier --write src/**",
+    "prepare": "npm run build",
+    "test": "NODE_ENV=test jest"
+  },
+  "files": [
+    "*.js",
+    "*.d.ts",
+    "!src",
+    "!*.test.*",
+    "!*.config.js",
+    "!node_modules"
+  ],
+  "devDependencies": {
+    "@types/jest": "^24.0.15",
+    "@types/node": "^12.0.10",
+    "@typescript-eslint/eslint-plugin": "^1.11.0",
+    "@typescript-eslint/parser": "^1.11.0",
+    "eslint": "^6.0.1",
+    "eslint-config-prettier": "^6.0.0",
+    "jest": "^24.8.0",
+    "prettier": "^1.18.2",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.2"
+  }
 }
