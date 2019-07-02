@@ -22,6 +22,9 @@ export default class AWSS3CloudFrontTarget implements Target {
       { name: 'bucketName', type: 'input', message: 'New S3 bucket name?' },
       { name: 'createCloudFront', type: 'confirm', message: 'Create cloudfront distribution?' },
     ]);
+
+    // @TODO: add domains + certificates here
+
     return config;
   };
 
@@ -33,6 +36,11 @@ export default class AWSS3CloudFrontTarget implements Target {
       console.error(`Configuration not found for stage ${opts.stage}`);
       return process.exit(1);
     }
+
+    // ask approval
+    // const { approve } = await inquirer.prompt([
+    //   { name: 'terraformState', type: 'confirm', message: 'Would you like to store terraform state in a bucket?', default: true },
+    // ]);
 
     console.log(`Provisioning AWS S3 + Cloudfront resources... (stage: ${opts.stage})`);
 

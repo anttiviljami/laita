@@ -3,9 +3,20 @@ import { CommandModule } from 'yargs';
 import YAML from 'js-yaml';
 import inquirer from 'inquirer';
 import Target from '../target/interface';
-import AWSS3CloudFrontTarget from '../target/aws-s3-cloudfront';
 import { getConfigForStage, resolveRcFile, RC_FILENAME } from '../util/config';
 import { GlobalOpts } from '..';
+
+import AWSS3CloudFrontTarget from '../target/aws-s3-cloudfront';
+
+const targets: string[] = [
+  'aws-s3-cloudfront',
+  'azure-storage',
+  'aws-amplify',
+  'netlify',
+  'heroku',
+  'github',
+  // no-wrap
+];
 
 export interface InitOpts extends GlobalOpts {}
 
@@ -23,7 +34,7 @@ const handler = async (opts: InitOpts) => {
   }
 
   const initConfig: InitConfig = await inquirer.prompt([
-    { name: 'target', message: 'Choose target', type: 'list', choices: ['aws-s3-cloudfront'] },
+    { name: 'target', message: 'Choose target', type: 'list', choices: targets },
     { name: 'source', message: 'Local directory for static files?', type: 'input', default: 'public/' },
   ]);
 
@@ -32,7 +43,7 @@ const handler = async (opts: InitOpts) => {
     target = new AWSS3CloudFrontTarget();
   }
   if (!target) {
-    console.error('Invalid target');
+    console.error('Target not available');
     return process.exit(1);
   }
 

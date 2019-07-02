@@ -21,3 +21,33 @@ Supported targets:
 - Node.js
 - Terraform
 
+## Install
+
+```
+npm install -g laita
+```
+
+## Quick start
+
+```
+laita init # follow interactive prompts to create .laitarc config
+laita provision # provision selected cloud infra using terraform
+laita deploy # deploy the static website to the provisioned infra
+```
+
+## Configuration
+
+Laita uses a `.laitarc` file to store its configuration.
+
+You can generate configurations interactively using the `laita init` command.
+
+The `.laitarc` file contents look like this:
+
+```yml
+default:
+  target: aws-s3-cloudfront
+  source: public/
+  region: eu-west-1
+  bucketName: laita-static-website
+  createCloudFront: true
+```
