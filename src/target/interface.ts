@@ -1,3 +1,5 @@
 export default interface Target {
-  configure: () => Promise<any>;
+  configure: (stage: string) => Promise<any>;
+  provision: (stage: string) => Promise<void>;
+  deploy: (stage: string) => Promise<void>;
 }

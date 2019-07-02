@@ -1,5 +1,7 @@
 import yargs from 'yargs';
 import initCommand from './command/init';
+import provisionCommand from './command/provision';
+import deployCommand from './command/deploy';
 
 /**
  * usage:
@@ -11,12 +13,15 @@ import initCommand from './command/init';
 
 export const main = async () => {
   try {
-    await yargs
+    const cmd = yargs
       .version()
       .usage('Usage: $0 <command>')
       .option('stage', { default: 'default', describe: 'Specify a stage to run this' })
       .demandCommand(1)
-      .command(initCommand).argv;
+      .command(initCommand)
+      .command(provisionCommand)
+      .command(deployCommand);
+    await cmd.argv;
   } catch (err) {
     console.error(err);
     process.exit(1);
