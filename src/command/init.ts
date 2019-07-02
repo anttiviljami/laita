@@ -34,8 +34,8 @@ const handler = async (opts: InitOpts) => {
   }
 
   const initConfig: InitConfig = await inquirer.prompt([
+    { name: 'source', message: 'Static files directory?', type: 'input', default: 'public/' },
     { name: 'target', message: 'Choose target', type: 'list', choices: targets },
-    { name: 'source', message: 'Local directory for static files?', type: 'input', default: 'public/' },
   ]);
 
   let target: Target | undefined;

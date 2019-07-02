@@ -21,6 +21,10 @@ module "cloudfront_distribution_<%= opts.stage %>" {
   providers = {
     aws = aws.<%= opts.stage %>
   }
+  <% if (opts.acmCertificateARN) { %>
+  acm_certificate_arn = "<%= opts.acmCertificateARN %>"
+  aliases = <%- JSON.stringify(opts.domains) %>
+  <% } %>
 }
 output "cloudfront_endpoint_<%= opts.stage %>" {
   value = "${module.cloudfront_distribution_<%= opts.stage %>.endpoint_url}"
