@@ -22,8 +22,8 @@ resource "azurerm_storage_account" "static" {
   }
 }
 
-output "primary_web_endpoint" {
-  value = "${azurerm_storage_account.static.primary_web_endpoint}"
+output "primary_web_host" {
+  value = "${azurerm_storage_account.static.primary_web_host}"
 }
 
 #resource "azurerm_storage_container" "static" {

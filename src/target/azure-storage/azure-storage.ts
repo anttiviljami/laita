@@ -12,6 +12,7 @@ import * as shell from '../../util/shell';
 export interface AzureStorageConfig {
   resourceGroup: string;
   storageAccount: string;
+  createCDN: boolean;
 }
 
 export default class AzureStorageTarget implements Target {
@@ -26,6 +27,12 @@ export default class AzureStorageTarget implements Target {
         name: 'storageAccount',
         type: 'input',
         message: 'Storage Account Name? (will be created)',
+      },
+      {
+        name: 'createCDN',
+        type: 'confirm',
+        message: 'Create a CDN endpoint? (needed to use custom domains)',
+        default: false,
       },
     ]);
     return config;
@@ -49,6 +56,9 @@ export default class AzureStorageTarget implements Target {
 
     // only apply to modules within this stage
     const targets = [`module.azure_storage_static_${stage}`];
+    if (config.createCDN) {
+      targets.push(`module.azure_cdn_endpoint_${stage}`);
+    }
     const targetOpts = targets.map((target) => `-target ${target}`).join(' ');
 
     // apply terraform

@@ -25,7 +25,7 @@ export default class AWSS3CloudFrontTarget implements Target {
       {
         name: 'bucketName',
         type: 'input',
-        message: 'S3 bucket name?',
+        message: 'S3 bucket name? (will be created)',
         default: 'randomly generated',
         filter: (name) => checkBucketName(name, `laita-static-${opts.stage}`),
       },
@@ -33,6 +33,7 @@ export default class AWSS3CloudFrontTarget implements Target {
         name: 'createCloudFront',
         type: 'confirm',
         message: 'Create CloudFront distribution? (needed to use custom domains)',
+        default: false,
       },
     ]);
     config.domains = [];
