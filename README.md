@@ -10,7 +10,7 @@ A CLI utility to easily deploy static websites to the cloud
 Supported targets:
 
 - [x] AWS S3 + Cloudfront
-- [ ] Azure Storage
+- [x] Azure Storage + Azure CDN
 - [ ] GCP Cloud Storage
 - [ ] Netlify
 - [ ] Heroku
