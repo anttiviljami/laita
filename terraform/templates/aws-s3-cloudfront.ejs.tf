@@ -1,6 +1,7 @@
 provider "aws" {
   region = "<%= opts.region %>"
   alias = "<%= opts.stage %>"
+  version = "~> 2.17"
 }
 
 module "s3_website_<%= opts.stage %>" {
