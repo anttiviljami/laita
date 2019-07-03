@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import inquirer from 'inquirer';
 import ejs from 'ejs';
-import Target from '../interface';
+import Target from '..';
 import { ConfigureOpts, InitConfig } from '../../command/config';
 import { ProvisionOpts } from '../../command/provision';
 import { DeployOpts } from '../../command/deploy';

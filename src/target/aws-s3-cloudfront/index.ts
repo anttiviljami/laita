@@ -1,2 +1,2 @@
-import AWSS3CloudFront from './aws-s3-cloudfront';
-export default AWSS3CloudFront;
+import AWSS3CloudFrontTarget from './aws-s3-cloudfront';
+export default AWSS3CloudFrontTarget;

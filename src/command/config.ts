@@ -2,22 +2,12 @@ import fs from 'fs';
 import { CommandModule } from 'yargs';
 import YAML from 'js-yaml';
 import inquirer from 'inquirer';
-import Target from '../target/interface';
 import { getConfigForStage, resolveRcFile, RC_FILENAME } from '../util/config';
 import { GlobalOpts } from '..';
 
-import AWSS3CloudFrontTarget from '../target/aws-s3-cloudfront';
 import { checkBucketName } from '../util/s3';
 import * as shell from '../util/shell';
-
-const targets: string[] = [
-  'aws-s3-cloudfront',
-  'azure-storage',
-  'gcp-storage',
-  'netlify',
-  'heroku',
-  // no-wrap
-];
+import { resolveTarget, targets } from '../target';
 
 export interface ConfigureOpts extends GlobalOpts {}
 
@@ -39,12 +29,9 @@ const handler = async (opts: ConfigureOpts) => {
     { name: 'target', message: 'Choose method', type: 'list', choices: targets },
   ]);
 
-  let target: Target | undefined;
-  if (initConfig.target === 'aws-s3-cloudfront') {
-    target = new AWSS3CloudFrontTarget();
-  }
+  const target = resolveTarget(initConfig.target);
   if (!target) {
-    console.error('Target not available');
+    console.error('Invalid target');
     return process.exit(1);
   }
 

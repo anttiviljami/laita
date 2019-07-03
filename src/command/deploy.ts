@@ -1,7 +1,6 @@
 import { CommandModule } from 'yargs';
 import { getConfigForStage } from '../util/config';
-import Target from '../target/interface';
-import AWSS3CloudFrontTarget from '../target/aws-s3-cloudfront';
+import { resolveTarget } from '../target';
 import { GlobalOpts } from '..';
 
 export interface DeployOpts extends GlobalOpts {}
@@ -14,11 +13,7 @@ const handler = async (opts: DeployOpts) => {
     process.exit(1);
   }
 
-  const targetName = config.target;
-  let target: Target | undefined;
-  if (targetName === 'aws-s3-cloudfront') {
-    target = new AWSS3CloudFrontTarget();
-  }
+  const target = resolveTarget(config.target);
   if (!target) {
     console.error('Invalid target');
     return process.exit(1);
