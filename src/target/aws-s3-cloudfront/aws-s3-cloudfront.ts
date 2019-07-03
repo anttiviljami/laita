@@ -95,23 +95,8 @@ export default class AWSS3CloudFrontTarget implements Target {
     }
     const targetOpts = targets.map((target) => `-target ${target}`).join(' ');
 
-    if (!opts.apply) {
-      // show terraform plan
-      await shell.run(`terraform plan ${targetOpts}`, { cwd: configDir });
-
-      // ask approval
-      const { approve } = await inquirer.prompt([
-        { name: 'approve', type: 'confirm', message: 'Apply changes?', default: true },
-      ]);
-
-      // exit if not approved
-      if (!approve) {
-        return;
-      }
-    }
-
     // apply terraform
-    await shell.run(`terraform apply -auto-approve ${targetOpts}`, { cwd: configDir });
+    await shell.run(`terraform apply ${opts.apply ? '-auto-approve ' : ''}${targetOpts}`, { cwd: configDir });
   };
 
   public deploy = async (opts: DeployOpts) => {
